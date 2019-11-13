@@ -55,7 +55,8 @@ RUN set -xe && \
         tzdata \
         unrar \
         zip \
-        zlib-dev && \
+        zlib-dev \
+        zstd-dev && \
     \
     # Install and enable php extensions
     docker-php-ext-configure zip --with-libzip && \
