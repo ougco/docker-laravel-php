@@ -52,6 +52,7 @@ RUN set -xe && \
         libbz2 \
         mysql-client \
         bzip2-dev \
+        tzdata \
         unrar \
         zip \
         zlib-dev && \
@@ -100,12 +101,12 @@ RUN set -xe && \
     # Cleanup: build deps and cache.
     apk del -f --purge --no-network .build-deps && \
     \
-    rm -rf /tmp/* /var/cache/apk/* && \
+    rm -rf /tmp/* /var/cache/apk/* /usr/src/* && \
     \
     composer clear-cache
 
 # Copy PHP.ini settings to the container
 COPY config/* $PHP_INI_DIR/conf.d/
 
-# Set timezone & update app root path in crontab.
-RUN sed -i "s|UTC|${TZ}|i" $PHP_INI_DIR/conf.d/05-date-timezone.ini
+# Change default shell for root user.
+RUN sed -i "s|root:/bin/ash|root:/bin/bash|i" /etc/passwd
